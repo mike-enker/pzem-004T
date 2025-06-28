@@ -3,6 +3,14 @@ import time
 import argparse
 from datetime import datetime
 from pzem_tool import PZEM004T
+import signal
+import sys
+
+def shutdown(sig, frame, f=None):
+    print("Received SIGINT, shutting down gracefully...")
+    if f is not None:
+        f.close()
+    sys.exit(0)
 
 def main():
     parser = argparse.ArgumentParser(description="PZEM-004T Data Logger")
@@ -31,6 +39,8 @@ def main():
         writer = csv.writer(f)
         if not args.append:
             writer.writerow(['timestamp', 'voltage', 'current', 'frequency'])
+
+        signal.signal(signal.SIGINT, lambda sig,frame: shutdown(sig,frame,pzem))
 
         try:
             while True:
