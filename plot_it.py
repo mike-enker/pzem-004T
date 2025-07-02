@@ -14,7 +14,7 @@ import os
 def main():
     parser = argparse.ArgumentParser(description="PZEM-004T log plot tool")
     parser.add_argument(
-        "-f", "--file", type=str, default=f'{os.getenv("HOME")}/log/pzem_out.log',
+        "-f", "--file", type=str, default=f'{os.getenv("HOME")}/logs/pzem_log.csv',
         help="csv file"
     )
     args = parser.parse_args()
@@ -29,8 +29,7 @@ def main():
         df = pd.read_csv(csv_file_path)
 
         if 'timestamp' in df.columns:
-            df['timestamp'] = pd.to_datetime(df['timestamp'], errors='coerce')
-
+            df['timestamp'] = pd.to_datetime(df['timestamp'], format='ISO8601', errors='coerce')
             if df['timestamp'].isnull().any():
                 print("Warning: Some timestamps could not be parsed and were converted to NaT.")
                 print("Rows with unparsed timestamps (first 5):")
