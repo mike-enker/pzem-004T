@@ -13,12 +13,14 @@ if [ $(whoami) != root ];
 then 
     sudo "$0" "$HOME" "$@"
     exit $?
-else
-    "$0" "$HOME" "$@"
-    exit $?
 fi
 
 echo Running as: $(whoami)
+if [ "$#" -lt 1 ]; then
+    echo "Don't run a root directly."
+    exit -2
+fi
+
 USER_HOME=$1
 echo "USER_HOME=$USER_HOME"
 
