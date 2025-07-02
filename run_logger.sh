@@ -13,6 +13,9 @@ if [ $(whoami) != root ];
 then 
     sudo "$0" "$HOME" "$@"
     exit $?
+else
+    "$0" "$HOME" "$@"
+    exit $?
 fi
 
 echo Running as: $(whoami)
